@@ -13,7 +13,12 @@ namespace Chess.Pieces
         {
         }
 
-        public override void Move(int currentX, int currentY, int destinationX, int destinationY)
+        public override void Move(int destinationX, int destinationY)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override void ShowMoves(int currentRow, int currentCol)
         {
             throw new NotImplementedException();
         }

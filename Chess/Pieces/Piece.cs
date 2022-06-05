@@ -4,16 +4,17 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace Chess
 {
     public abstract class Piece
     {
 
-        private string name;
-        private int col;
-        private int row;
-        private string color;
+        protected string name;
+        protected int col;
+        protected int row;
+        protected string color;
 
         public Piece(string name, int positionX, int positionY, string color)
         {
@@ -23,7 +24,8 @@ namespace Chess
             this.color = color;
         }
 
-        public abstract void Move(int currentX, int currentY, int destinationX, int destinationY);
+        public abstract void Move(int destinationX, int destinationY);
+        public abstract void ShowMoves(int currentRow, int currentCol);
 
         public string Name { get { return name; } }
         public int Col { get { return col; } }
