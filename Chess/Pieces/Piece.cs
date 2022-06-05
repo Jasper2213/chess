@@ -24,12 +24,14 @@ namespace Chess
             this.color = color;
         }
 
-        public abstract void Move(int destinationX, int destinationY);
+        public abstract void Move(int currentRow, int currentCol, int targetRow, int targetCol);
         public abstract void ShowMoves(int currentRow, int currentCol);
 
         public string Name { get { return name; } }
         public int Col { get { return col; } }
+        public int SetCol { set { col = value; } }
         public int Row { get { return row; } }
+        public int SetRow { set { row = value; } }
         public string Color { get { return color; } }
         public bool IsWhite { get { return color == "white"; } }
         public Image Image { get { return Image.FromFile(@"../images/" + name.Split(' ')[0] + "-" + color + ".png"); } }

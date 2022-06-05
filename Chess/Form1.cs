@@ -9,14 +9,23 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
+// TODO: Setup screen(s): player names, board colors?, ...
+// TODO: Players take turns, white starts
+// TODO: Overview of pieces each player took?
+
 namespace Chess
 {
     public partial class Form1 : Form
     {
         const int tileSize = 120;
+        const byte ROW_COUNT = 8;
+        const byte COL_COUNT = 8;
 
         static List<Button> allButtons;
-        static List<Piece> pieces;
+        public static List<Piece> pieces;
+        public static List<Piece> takenPieces;
+
+        Piece selectedPiece = null;
 
         public Form1()
         {
@@ -24,6 +33,8 @@ namespace Chess
 
             allButtons = new List<Button>();
             pieces = new List<Piece>();
+
+            takenPieces = new List<Piece>();
 
             pieces.Add(new Rook("rook 1", 0, 0, "black"));
             pieces.Add(new Knight("knight 1", 1, 0, "black"));
@@ -62,12 +73,12 @@ namespace Chess
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            this.Size = new Size(tileSize * 8 + 300, tileSize * 8 + 50);
+            this.Size = new Size(tileSize * COL_COUNT + 300, tileSize * ROW_COUNT + 50);
             this.CenterToScreen();
 
-            for (int row = 0; row < 8; row++)
+            for (int row = 0; row < ROW_COUNT; row++)
             {
-                for (int col = 0; col < 8; col++)
+                for (int col = 0; col < COL_COUNT; col++)
                 {
                     Button button = new Button();
                     button.Location = new Point(col * tileSize, row * tileSize);
@@ -75,17 +86,6 @@ namespace Chess
                     button.FlatStyle = FlatStyle.Flat;
                     button.FlatAppearance.BorderColor = Color.White;
                     button.Tag = row + " " + col;
-
-                    if ((row + col) % 2 == 0)
-                        button.BackColor = Color.Wheat;
-                    else button.BackColor = Color.Olive;
-
-                    Piece piece = GetPiece(col, row);
-                    if (piece != null)
-                    {
-                        button.BackgroundImage = piece.Image;
-                        button.BackgroundImage.Tag = piece.Color + " " + piece.Name;
-                    }
                     button.BackgroundImageLayout = ImageLayout.Center;
 
                     button.Click += new EventHandler(Tile_Click);
@@ -94,33 +94,78 @@ namespace Chess
                     allButtons.Add(button);
                 }
             }
+
+            ReloadBoard();
         }
 
         private void Tile_Click(object sender, EventArgs e)
         {
             Button button = (Button) sender;
+            int row = int.Parse(button.Tag.ToString().Split(' ')[0]);
+            int col = int.Parse(button.Tag.ToString().Split(' ')[1]);
 
+            Piece piece = GetPiece(col, row);
+
+
+            // if the player clicks on a piece
             if (button.BackgroundImage != null)
             {
-                RestoreButtonColors();
-
-                string[] tagWords = button.BackgroundImage.Tag.ToString().Split(' ');
-
-                string name;
-                if (tagWords.Length == 3)
-                    name = tagWords[1] + " " + tagWords[2];
-                else name = tagWords[1];
-
-                Piece piece = GetPiece(name);
-                piece.ShowMoves(int.Parse(button.Tag.ToString().Split(' ')[0]), int.Parse(button.Tag.ToString().Split(' ')[1]));
+                // If the player already clicked on a piece
+                if (selectedPiece != null)
+                {
+                    // If the player wants to see the possible moves for another of its pieces
+                    if (selectedPiece.Color == piece.Color)
+                    {
+                        ReloadBoard();
+                        selectedPiece = piece;
+                        selectedPiece.ShowMoves(selectedPiece.Row, selectedPiece.Col);
+                    }
+                    // Player wants to take the piece it clicked on (Taking is handled in Piece)
+                    else
+                    {
+                        if (MoveIsValid(row, col))
+                        {
+                            selectedPiece.Move(selectedPiece.Row, selectedPiece.Col, row, col);
+                            selectedPiece = null;
+                            ReloadBoard();
+                        }
+                    }
+                }
+                // No piece was selected yet
+                else
+                {
+                    ReloadBoard();
+                    selectedPiece = piece;
+                    selectedPiece.ShowMoves(selectedPiece.Row, selectedPiece.Col);
+                }
+            }
+            // Player clicked on an empty space
+            else
+            {
+                // If player selected a piece to move
+                if (selectedPiece != null)
+                {
+                    if (MoveIsValid(row, col))
+                    {
+                        selectedPiece.Move(selectedPiece.Row, selectedPiece.Col, row, col);
+                        selectedPiece = null;
+                        ReloadBoard();
+                    }
+                }
             }
         }
 
-        public static Piece GetPiece(string name)
+        public bool MoveIsValid(int targetRow, int targetCol)
+        {
+            Button button = GetButton(targetRow, targetCol);
+            return button.BackColor == Color.CadetBlue;
+        }
+
+        public static Piece GetPiece(string name, string color)
         {
             foreach (Piece piece in pieces)
             {
-                if (piece.Name == name)
+                if (piece.Name == name && piece.Color == color)
                     return piece;
             }
 
@@ -149,17 +194,25 @@ namespace Chess
             return null;
         }
 
-        private void RestoreButtonColors()
+        private void ReloadBoard()
         {
-            for (int i = 0; i < 8; i++)
+            for (int row = 0; row < ROW_COUNT; row++)
             {
-                for (int j = 0; j < 8; j++)
+                for (int col = 0; col < COL_COUNT; col++)
                 {
-                    Button button = Form1.GetButton(i, j);
+                    Button button = GetButton(row, col);
+                    Piece piece = GetPiece(col, row);
 
-                    if ((i + j) % 2 == 0)
-                        button.BackColor = System.Drawing.Color.Wheat;
-                    else button.BackColor = System.Drawing.Color.Olive;
+                    if (piece != null)
+                    {
+                        button.BackgroundImage = piece.Image;
+                        button.BackgroundImage.Tag = piece.Color + " " + piece.Name;
+                    }
+                    else button.BackgroundImage = null;
+
+                    if ((row + col) % 2 == 0)
+                        button.BackColor = Color.Wheat;
+                    else button.BackColor = Color.Olive;
                 }
             }
         }
