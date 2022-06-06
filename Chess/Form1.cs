@@ -27,6 +27,8 @@ namespace Chess
 
         Piece selectedPiece = null;
 
+        bool isWhiteTurn;
+
         public Form1()
         {
             InitializeComponent();
@@ -69,6 +71,8 @@ namespace Chess
             pieces.Add(new Bishop("bishop 2", 5, 7, "white"));
             pieces.Add(new Knight("knight 2", 6, 7, "white"));
             pieces.Add(new Rook("rook 2", 7, 7, "white"));
+
+            isWhiteTurn = true;
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -106,29 +110,26 @@ namespace Chess
 
             Piece piece = GetPiece(col, row);
 
-
             // if the player clicks on a piece
             if (button.BackgroundImage != null)
             {
                 // If the player already clicked on a piece
                 if (selectedPiece != null)
                 {
-                    // If the player wants to see the possible moves for another of its pieces
-                    if (selectedPiece.Color == piece.Color)
+                    if (MoveIsValid(row, col))
+                    {
+                        selectedPiece.Move(selectedPiece.Row, selectedPiece.Col, row, col);
+                        selectedPiece = null;
+
+                        isWhiteTurn = !isWhiteTurn;
+
+                        ReloadBoard();
+                    }
+                    else
                     {
                         ReloadBoard();
                         selectedPiece = piece;
                         selectedPiece.ShowMoves(selectedPiece.Row, selectedPiece.Col);
-                    }
-                    // Player wants to take the piece it clicked on (Taking is handled in Piece)
-                    else
-                    {
-                        if (MoveIsValid(row, col))
-                        {
-                            selectedPiece.Move(selectedPiece.Row, selectedPiece.Col, row, col);
-                            selectedPiece = null;
-                            ReloadBoard();
-                        }
                     }
                 }
                 // No piece was selected yet
@@ -149,6 +150,9 @@ namespace Chess
                     {
                         selectedPiece.Move(selectedPiece.Row, selectedPiece.Col, row, col);
                         selectedPiece = null;
+
+                        isWhiteTurn = !isWhiteTurn;
+
                         ReloadBoard();
                     }
                 }
@@ -157,8 +161,10 @@ namespace Chess
 
         public bool MoveIsValid(int targetRow, int targetCol)
         {
+            // TODO: improve how a valid move is calculated
+
             Button button = GetButton(targetRow, targetCol);
-            return button.BackColor == Color.CadetBlue;
+            return button.BackColor == Color.CadetBlue && selectedPiece.IsWhite == isWhiteTurn;
         }
 
         public static Piece GetPiece(string name, string color)

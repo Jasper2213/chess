@@ -35,5 +35,6 @@ namespace Chess
         public string Color { get { return color; } }
         public bool IsWhite { get { return color == "white"; } }
         public Image Image { get { return Image.FromFile(@"../images/" + name.Split(' ')[0] + "-" + color + ".png"); } }
+
     }
 }
