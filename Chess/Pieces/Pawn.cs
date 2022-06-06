@@ -41,8 +41,6 @@ namespace Chess.Pieces
 
         public override void ShowMoves(int currentRow, int currentCol)
         {
-            // TODO: Dont show move to own piece
-
             Button possibleMove;
             Pawn piece = (Pawn)Form1.GetPiece(currentCol, currentRow);
 
@@ -50,15 +48,18 @@ namespace Chess.Pieces
             if (isFirstMove)
                 steps = 2;
 
+            // Forward steps
             for (int step = 1; step <= steps; step++)
             {
                 if (piece.IsWhite)
                     possibleMove = Form1.GetButton(currentRow - step, currentCol);
                 else possibleMove = Form1.GetButton(currentRow + step, currentCol);
 
-                HighlightButton(possibleMove, piece.Color);
+                if (possibleMove.BackgroundImage == null)
+                    HighlightButton(possibleMove, piece.Color);
             }
 
+            // Diagonal moves to attack pieces
             if (piece.IsWhite)
             {
                 possibleMove = Form1.GetButton(currentRow - 1, currentCol - 1);
