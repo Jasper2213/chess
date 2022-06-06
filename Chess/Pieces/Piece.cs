@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Chess.Pieces;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
@@ -24,7 +25,32 @@ namespace Chess
             this.color = color;
         }
 
-        public abstract void Move(int currentRow, int currentCol, int targetRow, int targetCol);
+        public void Move(int currentRow, int currentCol, int targetRow, int targetCol)
+        {
+            Button button = Board.GetButton(targetRow, targetCol);
+            if (button.BackgroundImage != null)
+            {
+                Piece takenPiece = Board.GetPiece(targetCol, targetRow);
+
+                Board.pieces.Remove(takenPiece);
+                Board.takenPieces.Add(takenPiece);
+
+                if (takenPiece is King)
+                    MessageBox.Show("END GAME!");
+            }
+
+            Piece piece = Board.GetPiece(currentCol, currentRow);
+
+            piece.SetRow = targetRow;
+            piece.SetCol = targetCol;
+
+            if (piece is Pawn)
+            {
+                Pawn pawn = (Pawn)piece;
+                pawn.SetIsFirstMove = false;
+            }
+        }
+
         public abstract void ShowMoves(int currentRow, int currentCol);
 
         protected void HighlightButton(Button possibleMove, string color)
@@ -32,7 +58,7 @@ namespace Chess
             // If the button exists
             if (possibleMove != null)
             {
-                Piece piece = Form1.GetPiece(int.Parse(possibleMove.Tag.ToString().Split(' ')[1]), int.Parse(possibleMove.Tag.ToString().Split(' ')[0]));
+                Piece piece = Board.GetPiece(int.Parse(possibleMove.Tag.ToString().Split(' ')[1]), int.Parse(possibleMove.Tag.ToString().Split(' ')[0]));
 
                 // If there's a piece on the button that is from the opponent
                 if (piece != null && piece.Color != color)

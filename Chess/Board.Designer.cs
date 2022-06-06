@@ -1,6 +1,6 @@
 ﻿namespace Chess
 {
-    partial class Form1
+    partial class Board
     {
         /// <summary>
         /// Required designer variable.
@@ -30,14 +30,14 @@
         {
             this.SuspendLayout();
             // 
-            // Form1
+            // Board
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.ClientSize = new System.Drawing.Size(784, 761);
             this.DoubleBuffered = true;
-            this.Name = "Form1";
+            this.Name = "Board";
             this.Text = "Chess";
             this.Load += new System.EventHandler(this.Form1_Load);
             this.ResumeLayout(false);

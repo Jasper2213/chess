@@ -15,7 +15,7 @@ using System.Windows.Forms;
 
 namespace Chess
 {
-    public partial class Form1 : Form
+    public partial class Board : Form
     {
         const int tileSize = 120;
         const byte ROW_COUNT = 8;
@@ -29,7 +29,7 @@ namespace Chess
 
         bool isWhiteTurn;
 
-        public Form1()
+        public Board()
         {
             InitializeComponent();
 
@@ -71,8 +71,6 @@ namespace Chess
             pieces.Add(new Bishop("bishop 2", 5, 7, "white"));
             pieces.Add(new Knight("knight 2", 6, 7, "white"));
             pieces.Add(new Rook("rook 2", 7, 7, "white"));
-
-            pieces.Add(new King("king 2", 4, 4, "white"));
 
             isWhiteTurn = true;
         }
@@ -218,8 +216,8 @@ namespace Chess
                     else button.BackgroundImage = null;
 
                     if ((row + col) % 2 == 0)
-                        button.BackColor = Color.Wheat;
-                    else button.BackColor = Color.Olive;
+                        button.BackColor = Settings.TileColor1;
+                    else button.BackColor = Settings.TileColor2;
                 }
             }
         }

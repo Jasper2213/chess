@@ -14,24 +14,9 @@ namespace Chess.Pieces
         {
         }
 
-        public override void Move(int currentRow, int currentCol, int targetRow, int targetCol)
-        {
-            Button button = Form1.GetButton(targetRow, targetCol);
-            if (button.BackgroundImage != null)
-            {
-                Form1.pieces.Remove(Form1.GetPiece(targetCol, targetRow));
-                Form1.takenPieces.Add(Form1.GetPiece(targetCol, targetRow));
-            }
-
-            Piece piece = Form1.GetPiece(currentCol, currentRow);
-
-            piece.SetRow = targetRow;
-            piece.SetCol = targetCol;
-        }
-
         public override void ShowMoves(int currentRow, int currentCol)
         {
-            Bishop bishop = (Bishop)Form1.GetPiece(currentCol, currentRow);
+            Bishop bishop = (Bishop)Board.GetPiece(currentCol, currentRow);
 
             int row = currentRow;
             int col = currentCol;
@@ -39,13 +24,13 @@ namespace Chess.Pieces
             Button possibleMove;
 
             // Diagonally right up
-            possibleMove = Form1.GetButton(row - 1, currentCol + 1);
+            possibleMove = Board.GetButton(row - 1, currentCol + 1);
             while (possibleMove != null && possibleMove.BackgroundImage == null)
             {
                 HighlightButton(possibleMove, bishop.Color);
                 row--;
                 col++;
-                possibleMove = Form1.GetButton(row, col);
+                possibleMove = Board.GetButton(row, col);
             }
 
             HighlightButton(possibleMove, bishop.Color);
@@ -53,13 +38,13 @@ namespace Chess.Pieces
             // Diagonally left down
             row = currentRow;
             col = currentCol;
-            possibleMove = Form1.GetButton(row + 1, col - 1);
+            possibleMove = Board.GetButton(row + 1, col - 1);
             while (possibleMove != null && possibleMove.BackgroundImage == null)
             {
                 HighlightButton(possibleMove, bishop.Color);
                 row++;
                 col--;
-                possibleMove = Form1.GetButton(row, col);
+                possibleMove = Board.GetButton(row, col);
             }
 
             HighlightButton(possibleMove, bishop.Color);
@@ -67,13 +52,13 @@ namespace Chess.Pieces
             // Diagonally left up
             row = currentRow;
             col = currentCol;
-            possibleMove = Form1.GetButton(row - 1, col - 1);
+            possibleMove = Board.GetButton(row - 1, col - 1);
             while (possibleMove != null && possibleMove.BackgroundImage == null)
             {
                 HighlightButton(possibleMove, bishop.Color);
                 row--;
                 col--;
-                possibleMove = Form1.GetButton(row, col);
+                possibleMove = Board.GetButton(row, col);
             }
 
             HighlightButton(possibleMove, bishop.Color);
@@ -81,13 +66,13 @@ namespace Chess.Pieces
             // Diagonally right down
             row = currentRow;
             col = currentCol;
-            possibleMove = Form1.GetButton(row + 1, col + 1);
+            possibleMove = Board.GetButton(row + 1, col + 1);
             while (possibleMove != null && possibleMove.BackgroundImage == null)
             {
                 HighlightButton(possibleMove, bishop.Color);
                 row++;
                 col++;
-                possibleMove = Form1.GetButton(row, col);
+                possibleMove = Board.GetButton(row, col);
             }
 
             HighlightButton(possibleMove, bishop.Color);
