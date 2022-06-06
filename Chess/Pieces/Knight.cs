@@ -34,7 +34,7 @@ namespace Chess.Pieces
             Knight piece = (Knight) Form1.GetPiece(currentCol, currentRow);
             Button possibleMove;
 
-            for (int i = 0; i < 8; i++)
+            for (int i = 0; i < 8; i++)     // 8, because a knight has 8 possible moves
             {
                 switch (i)
                 {
