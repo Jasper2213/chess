@@ -91,7 +91,6 @@ namespace Chess
                     button.FlatAppearance.BorderColor = Color.White;
                     button.Tag = row + " " + col;
                     button.BackgroundImageLayout = ImageLayout.Center;
-
                     button.Click += new EventHandler(Tile_Click);
 
                     this.Controls.Add(button);

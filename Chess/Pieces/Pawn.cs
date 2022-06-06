@@ -41,7 +41,7 @@ namespace Chess.Pieces
 
         public override void ShowMoves(int currentRow, int currentCol)
         {
-            Pawn piece = (Pawn)Form1.GetPiece(currentCol, currentRow);
+            Pawn piece = (Pawn) Form1.GetPiece(currentCol, currentRow);
             Button possibleMove1;
 
             int steps;
@@ -116,8 +116,5 @@ namespace Chess.Pieces
                 }
             }
         }
-
-        public bool IsFirstMove { get { return isFirstMove; } }
-        public bool SetIsFirstMove { set { isFirstMove = value; } }
     }
 }
