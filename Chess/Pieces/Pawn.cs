@@ -31,89 +31,53 @@ namespace Chess.Pieces
                 Form1.takenPieces.Add(Form1.GetPiece(targetCol, targetRow));
             }
 
-            Pawn pawn = (Pawn) Form1.GetPiece(currentCol, currentRow);
+            Piece piece = Form1.GetPiece(currentCol, currentRow);
 
-            pawn.SetRow = targetRow;
-            pawn.SetCol = targetCol;
+            piece.SetRow = targetRow;
+            piece.SetCol = targetCol;
 
             isFirstMove = false;
         }
 
         public override void ShowMoves(int currentRow, int currentCol)
         {
-            Pawn piece = (Pawn) Form1.GetPiece(currentCol, currentRow);
-            Button possibleMove1;
+            // TODO: Dont show move to own piece
 
-            int steps;
-            if (isFirstMove) steps = 2;
-            else steps = 1;
+            Button possibleMove;
+            Pawn piece = (Pawn)Form1.GetPiece(currentCol, currentRow);
+
+            int steps = 1;
+            if (isFirstMove)
+                steps = 2;
 
             for (int step = 1; step <= steps; step++)
             {
                 if (piece.IsWhite)
-                    possibleMove1 = Form1.GetButton(currentRow - step, currentCol);
-                else possibleMove1 = Form1.GetButton(currentRow + step, currentCol);
+                    possibleMove = Form1.GetButton(currentRow - step, currentCol);
+                else possibleMove = Form1.GetButton(currentRow + step, currentCol);
 
-                if (possibleMove1.BackgroundImage != null)
-                    break;
-
-                possibleMove1.BackColor = System.Drawing.Color.CadetBlue;
+                HighlightButton(possibleMove, piece.Color);
             }
-
-            Button buttonDiagonalLeft;
-            Button buttonDiagonalRight;
 
             if (piece.IsWhite)
             {
-                if (piece.Col == 0)
-                {
-                    buttonDiagonalRight = Form1.GetButton(currentRow - 1, currentCol + 1);
-                    if (buttonDiagonalRight.BackgroundImage != null)
-                        buttonDiagonalRight.BackColor = System.Drawing.Color.CadetBlue;
-                }
-                else if (piece.Col == 7)
-                {
-                    buttonDiagonalLeft = Form1.GetButton(currentRow - 1, currentCol - 1);
-                    if (buttonDiagonalLeft.BackgroundImage != null)
-                        buttonDiagonalLeft.BackColor = System.Drawing.Color.CadetBlue;
-                }
-                else
-                {
-                    buttonDiagonalLeft = Form1.GetButton(currentRow - 1, currentCol - 1);
-                    buttonDiagonalRight = Form1.GetButton(currentRow - 1, currentCol + 1);
+                possibleMove = Form1.GetButton(currentRow - 1, currentCol - 1);
+                if (possibleMove != null && possibleMove.BackgroundImage != null)
+                    HighlightButton(possibleMove, piece.Color);
 
-                    if (buttonDiagonalLeft.BackgroundImage != null)
-                        buttonDiagonalLeft.BackColor = System.Drawing.Color.CadetBlue;
-
-                    if (buttonDiagonalRight.BackgroundImage != null)
-                        buttonDiagonalRight.BackColor = System.Drawing.Color.CadetBlue;
-                }
+                possibleMove = Form1.GetButton(currentRow - 1, currentCol + 1);
+                if (possibleMove != null && possibleMove.BackgroundImage != null)
+                    HighlightButton(possibleMove, piece.Color);
             }
             else
             {
-                if (piece.Col == 7)
-                {
-                    buttonDiagonalRight = Form1.GetButton(currentRow + 1, currentCol - 1);
-                    if (buttonDiagonalRight.BackgroundImage != null)
-                        buttonDiagonalRight.BackColor = System.Drawing.Color.CadetBlue;
-                }
-                else if (piece.Col == 0)
-                {
-                    buttonDiagonalLeft = Form1.GetButton(currentRow + 1, currentCol + 1);
-                    if (buttonDiagonalLeft.BackgroundImage != null)
-                        buttonDiagonalLeft.BackColor = System.Drawing.Color.CadetBlue;
-                }
-                else
-                {
-                    buttonDiagonalLeft = Form1.GetButton(currentRow + 1, currentCol + 1);
-                    buttonDiagonalRight = Form1.GetButton(currentRow + 1, currentCol - 1);
+                possibleMove = Form1.GetButton(currentRow + 1, currentCol - 1);
+                if (possibleMove != null && possibleMove.BackgroundImage != null)
+                    HighlightButton(possibleMove, piece.Color);
 
-                    if (buttonDiagonalLeft.BackgroundImage != null)
-                        buttonDiagonalLeft.BackColor = System.Drawing.Color.CadetBlue;
-
-                    if (buttonDiagonalRight.BackgroundImage != null)
-                        buttonDiagonalRight.BackColor = System.Drawing.Color.CadetBlue;
-                }
+                possibleMove = Form1.GetButton(currentRow + 1, currentCol + 1);
+                if (possibleMove != null && possibleMove.BackgroundImage != null)
+                    HighlightButton(possibleMove, piece.Color);
             }
         }
     }

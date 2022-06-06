@@ -23,10 +23,10 @@ namespace Chess.Pieces
                 Form1.takenPieces.Add(Form1.GetPiece(targetCol, targetRow));
             }
 
-            Knight knight = (Knight)Form1.GetPiece(currentCol, currentRow);
+            Piece piece = Form1.GetPiece(currentCol, currentRow);
 
-            knight.SetRow = targetRow;
-            knight.SetCol = targetCol;
+            piece.SetRow = targetRow;
+            piece.SetCol = targetCol;
         }
 
         public override void ShowMoves(int currentRow, int currentCol)
@@ -78,21 +78,6 @@ namespace Chess.Pieces
                         HighlightButton(possibleMove, piece.Color);
                         break;
                 }
-            }
-        }
-
-        private void HighlightButton(Button possibleMove, string color)
-        {
-            if (possibleMove != null)
-            {
-                Piece piece = Form1.GetPiece(int.Parse(possibleMove.Tag.ToString().Split(' ')[1]), int.Parse(possibleMove.Tag.ToString().Split(' ')[0]));
-
-                if (piece != null && piece.Color != color)
-                {
-                    possibleMove.BackColor = System.Drawing.Color.CadetBlue;
-                }
-                else if (piece == null)
-                    possibleMove.BackColor = System.Drawing.Color.CadetBlue;
             }
         }
     }

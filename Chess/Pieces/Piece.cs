@@ -27,6 +27,22 @@ namespace Chess
         public abstract void Move(int currentRow, int currentCol, int targetRow, int targetCol);
         public abstract void ShowMoves(int currentRow, int currentCol);
 
+        protected void HighlightButton(Button possibleMove, string color)
+        {
+            // If the button exists
+            if (possibleMove != null)
+            {
+                Piece piece = Form1.GetPiece(int.Parse(possibleMove.Tag.ToString().Split(' ')[1]), int.Parse(possibleMove.Tag.ToString().Split(' ')[0]));
+
+                // If there's a piece on the button that is from the opponent
+                if (piece != null && piece.Color != color)
+                    possibleMove.BackColor = System.Drawing.Color.CadetBlue;
+                // If there's no piece on that button
+                else if (piece == null)
+                    possibleMove.BackColor = System.Drawing.Color.CadetBlue;
+            }
+        }
+
         public string Name { get { return name; } }
         public int Col { get { return col; } }
         public int SetCol { set { col = value; } }
