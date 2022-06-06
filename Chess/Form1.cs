@@ -72,6 +72,8 @@ namespace Chess
             pieces.Add(new Knight("knight 2", 6, 7, "white"));
             pieces.Add(new Rook("rook 2", 7, 7, "white"));
 
+            pieces.Add(new King("king 2", 4, 4, "white"));
+
             isWhiteTurn = true;
         }
 
